@@ -11,11 +11,11 @@ rdkit                2024.3.3
 torch                2.3.1
 tensorboard          2.17.0
 lightning            2.3.3
-pytorch-lightning	 2.3.3
+pytorch-lightning    2.3.3
 salesforce-lavis     1.0.2
 unicore              0.0.1
 unimol_tools         0.1.0.post1
-rxnfp				 0.1.0
+rxnfp                0.1.0
 ```
 
 ## Datasets
