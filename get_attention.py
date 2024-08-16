@@ -10,18 +10,18 @@ from tqdm import tqdm
 class Finetuner:
     def __init__(self, args):
         self.args = args
-        self.data_prefix = "/amax/data/shirunhan/reaction/data"
+        self.data_prefix = args.data_prefix
         self.mse = MeanSquaredError()
         self.mae = MeanAbsoluteError()
         self.r2 = R2Score()
-        self.dirpath = os.path.join("/amax/data/group_0/models/finetuning", 
+        self.dirpath = os.path.join("/res", 
                                     f"{args.ds}/{args.ft_type}_{args.batch_size}_{args.max_epochs}_{args.dropout}_{args.init_lr}_{args.min_lr}_{args.weight_decay}_{args.gtm}_{args.lm}")
         if not os.path.exists(self.dirpath):
             os.makedirs(self.dirpath)
         self.logger = create_file_logger(os.path.join(self.dirpath, "log.txt"))
 
-        s2p = "/amax/data/group_0/yield_data/pretraining_data/smiles2pos_path.pkl"
-        s2p_ds = "/amax/data/group_0/yield_data/ds/smiles2pos_path.pkl"
+        s2p = "/data/pretraining/smiles2pos_path.pkl"
+        s2p_ds = "/data/finetuning/smiles2pos_path.pkl"
         with open(s2p, "rb") as f:
             self.pos_dict = pickle.load(f)
         with open(s2p_ds, "rb") as f:
@@ -82,6 +82,7 @@ class Finetuner:
         for k in res_:
             self.logger.info(res_[k])
             self.logger.info(f"{k}\t{np.mean(res_float[k]):.4f}\t{np.std(res_float[k]):.4f}")
+
     def get_BH_attention(self):
         data_list=[]
         out_list=[]
@@ -102,7 +103,7 @@ class Finetuner:
             data_list.append(data)
             out_list.append(out)
             cross_attention_list.append(cross_attention[10])
-        return {"data":data_list,"out":out_list,"cross_attention":cross_attention_list}
+        return {"data": data_list, "out": out_list, "cross_attention": cross_attention_list}
             
     def run_BH_or_SM(self):
         """add split ratio"""
@@ -213,7 +214,7 @@ if __name__ == '__main__':
     args.ds = "BH"
     args.ft_type = "conformer"
     args.batch_size = 128
-    args.max_epochs = 151
+    args.max_epochs = 150
     args.dropout = 0.2
     args.weight_decay = 1e-4
     args.init_lr = 5e-4
@@ -225,7 +226,7 @@ if __name__ == '__main__':
     args.cls = 0
     
     runner = Finetuner(args)
-    save_dict=runner.get_BH_attention()
+    save_dict = runner.get_BH_attention()
     with open("attention.pkl",'wb') as f:
         pickle.dump(save_dict,f)
     

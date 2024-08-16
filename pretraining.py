@@ -41,7 +41,7 @@ if __name__ == '__main__':
         )
     
     # reactions
-    with open("/amax/data/group_0/yield_data/pretraining_data/reactions.pkl", "rb") as f:
+    with open("/data/pretraining/reactions.pkl", "rb") as f:
         data_ = pickle.load(f)
     data_y = []
     for one in data_:
@@ -49,8 +49,8 @@ if __name__ == '__main__':
     print(f"reactions nums: {len(data_y)}")
 
     # coordinates of molecules
-    s2p = "/amax/data/group_0/yield_data/pretraining_data/smiles2pos_path.pkl"
-    s2p_ds = "/amax/data/group_0/yield_data/ds/smiles2pos_path.pkl"
+    s2p = "/data/pretraining/smiles2pos_path.pkl"
+    s2p_ds = "/data/downstream/smiles2pos_path.pkl"
     with open(s2p, "rb") as f:
         pos_dict = pickle.load(f)
     with open(s2p_ds, "rb") as f:

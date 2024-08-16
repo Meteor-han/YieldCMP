@@ -120,9 +120,9 @@ def get_args():
     parser.add_argument('--dropout', type=float, default=0.1)
     parser.add_argument("--predict_hidden_size", default=256, type=int)
     parser.add_argument('--load_model_path', type=str, 
-                        default="/amax/data/group_0/models/pretraining/0_True_True/pretraining_epoch=09-step=00570000.ckpt")
+                        default="/checkpoint/True_True/pretraining_epoch=09-step=00570000.ckpt")
     parser.add_argument('--ft_type', type=str, default="merge", choices=["text", "conformer", "merge"])
-    parser.add_argument('--data_prefix', type=str, default="/amax/data/xxx/reaction/data")
+    parser.add_argument('--data_prefix', type=str, default="/data/downstream")
 
     parser.add_argument('--mode', type=str, default='train')
     parser.add_argument('--strategy_name', type=str, default='deepspeed')

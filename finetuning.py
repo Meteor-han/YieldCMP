@@ -12,15 +12,15 @@ class Finetuner:
         self.mse = MeanSquaredError()
         self.mae = MeanAbsoluteError()
         self.r2 = R2Score()
-        self.dirpath = os.path.join("/amax/data/group_0/models/finetuning", 
+        self.dirpath = os.path.join("/res", 
                                     f"{args.ds}/{args.ft_type}_{args.batch_size}_{args.max_epochs}_{args.dropout}_{args.init_lr}_{args.min_lr}_{args.weight_decay}_{args.gtm}_{args.lm}")
         if not os.path.exists(self.dirpath):
             os.makedirs(self.dirpath)
         self.logger = create_file_logger(os.path.join(self.dirpath, "log.txt"))
 
         # coordinates of molecules
-        s2p = "/amax/data/group_0/yield_data/pretraining_data/smiles2pos_path.pkl"
-        s2p_ds = "/amax/data/group_0/yield_data/ds/smiles2pos_path.pkl"
+        s2p = "/data/pretraining/smiles2pos_path.pkl"
+        s2p_ds = "/data/downstream/smiles2pos_path.pkl"
         with open(s2p, "rb") as f:
             self.pos_dict = pickle.load(f)
         with open(s2p_ds, "rb") as f:

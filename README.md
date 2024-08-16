@@ -20,13 +20,15 @@ rxnfp                0.1.0
 
 ## Datasets
 
+`get_coor.py` is the example data to generate coordinates of molecules.
+
 ### Pre-training dataset
 
-We utilize and filter reactions from USPTO and CJHIF. You can download USPTO from https://figshare.com/articles/dataset/Chemical_reactions_from_US_patents_1976-Sep2016_/5104873 and CJHIF from https://github.com/jshmjs45/data_for_chem.
+We utilize and filter reactions from USPTO and CJHIF. You can download USPTO from https://figshare.com/articles/dataset/Chemical_reactions_from_US_patents_1976-Sep2016_/5104873 and CJHIF from https://github.com/jshmjs45/data_for_chem. Put the final reactions in `data/pretraining`.
 
 ### Downstream dataset
 
-We fine-tune our model on three publicly available downstream datasets. Related data and split for the HTE datasets (the Buchwald-Hartwig and the Suzuki-Miyaura reactions) and the real-world ELN dataset is stored in `downstream/BH`, `downstream/SM`, and `downstream/ELN`, respectively.
+We fine-tune our model on three publicly available downstream datasets. Related data and split for the HTE datasets (the Buchwald-Hartwig and the Suzuki-Miyaura reactions) and the real-world ELN dataset are stored in `data/downstream/BH`, `data/downstream/SM`, and `data/downstream/ELN`, respectively.
 
 ## Experiments
 
@@ -40,13 +42,20 @@ python pretraining.py --max_epochs 10 --batch_size 8 --weight_decay 0.05 --init_
 python pretraining.py --max_epochs 10 --batch_size 8 --cls 0 --lm --gtm --strategy_name ddp_find_unused_parameters_true
 ```
 
-We provide the model with full combinations of CSC, CSM, and SG losses in `checkpoint`. 
+We will provide the model with full combinations of CSC, CSM, and SG losses in `checkpoint`. 
 
 ### Fine-tuning
 
-Run `finetuning.py` fine-tune YieldFCP on a given downstream dataset. For example,
+Run `finetuning.py` to fine-tune YieldFCP on a given downstream dataset. For example,
 
 ```
 python finetuning.py --devices 0, --batch_size 128 --ds BH --repeat 10 --max_epochs 150 --ft_type conformer --dropout 0.2 --weight_decay 1e-4 --init_lr 1e-4 --min_lr 1e-5 --check_val_every_n_epoch 1 --warmup_steps 0 --load_model_path checkpoint/True_True/pretraining_epoch=09-step=00570000.ckpt
 ```
 
+### Attention weights
+
+Run `get_attention.py` to obtain the fine-grained cross-modal attention weights on the BH dataset. The checkpoint of the fine-tuned model should be stored in `res/BH`.
+
+```
+python get_attention.py
+```
